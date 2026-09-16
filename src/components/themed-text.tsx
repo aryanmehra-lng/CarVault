@@ -9,12 +9,17 @@ export type ThemedTextProps = TextProps & {
 };
 
 export function ThemedText({ style, type = 'default', themeColor, ...rest }: ThemedTextProps) {
-  const theme = useTheme();
+  const colorStyle =
+    themeColor === 'textSecondary'
+      ? styles.colorTextSecondary
+      : themeColor === 'tint'
+      ? styles.colorTint
+      : styles.colorText;
 
   return (
     <Text
       style={[
-        { color: theme[themeColor ?? 'text'] },
+        colorStyle,
         type === 'default' && styles.default,
         type === 'title' && styles.title,
         type === 'small' && styles.small,
@@ -69,5 +74,14 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.mono,
     fontWeight: Platform.select({ android: 700 }) ?? 500,
     fontSize: 12,
+  },
+  colorText: {
+    color: '#FFFFFF',
+  },
+  colorTextSecondary: {
+    color: '#94A3B8',
+  },
+  colorTint: {
+    color: '#2563EB',
   },
 });

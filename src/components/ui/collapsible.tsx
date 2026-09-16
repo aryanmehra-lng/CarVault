@@ -1,6 +1,6 @@
 import { SymbolView } from 'expo-symbols';
 import { PropsWithChildren, useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
@@ -14,8 +14,9 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
 
   return (
     <ThemedView>
-      <Pressable
-        style={({ pressed }) => [styles.heading, pressed && styles.pressedHeading]}
+      <TouchableOpacity
+        style={styles.heading}
+        activeOpacity={0.7}
         onPress={() => setIsOpen((value) => !value)}>
         <ThemedView type="backgroundElement" style={styles.button}>
           <SymbolView
@@ -23,12 +24,12 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
             size={14}
             weight="bold"
             tintColor={theme.text}
-            style={{ transform: [{ rotate: isOpen ? '-90deg' : '90deg' }] }}
+            style={isOpen ? styles.iconOpen : styles.iconClosed}
           />
         </ThemedView>
 
         <ThemedText type="small">{title}</ThemedText>
-      </Pressable>
+      </TouchableOpacity>
       {isOpen && (
         <Animated.View entering={FadeIn.duration(200)}>
           <ThemedView type="backgroundElement" style={styles.content}>
@@ -61,5 +62,11 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.three,
     marginLeft: Spacing.four,
     padding: Spacing.four,
+  },
+  iconOpen: {
+    transform: [{ rotate: '-90deg' }],
+  },
+  iconClosed: {
+    transform: [{ rotate: '90deg' }],
   },
 });
